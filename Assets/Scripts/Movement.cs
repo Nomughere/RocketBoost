@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {   
-    [SerializeField] InputAction thrust;
-    [SerializeField] InputAction rotation;
     [SerializeField] float thrustStrength = 100f;
     [SerializeField] float rotationStrength = 100f;
     [SerializeField] AudioClip mainEngineSFX;
@@ -15,15 +13,29 @@ public class Movement : MonoBehaviour
     Rigidbody rb;
     AudioSource audioSource;
 
-    private void Start() 
+    InputAction thrust;
+    InputAction rotation;
+
+private void Awake()
+{
+    // SPACE = forward thrust
+    thrust = new InputAction(binding: "<Keyboard>/space");
+
+    // A = rotate right, D = rotate left (as you asked before)
+    rotation = new InputAction(type: InputActionType.Value);
+    rotation.AddBinding("<Keyboard>/a"); // rotate right
+    rotation.AddBinding("<Keyboard>/d"); // rotate left
+}
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        audioSource = GetComponent<AudioSource>();    
+        audioSource = GetComponent<AudioSource>();
     }
 
-    private void OnEnable() 
+    private void OnEnable()
     {
-        thrust.Enable(); 
+        thrust.Enable();
         rotation.Enable();
     }
 
@@ -36,26 +48,16 @@ public class Movement : MonoBehaviour
     private void ProcessThrust()
     {
         if (thrust.IsPressed())
-        {
             StartThrusting();
-        }
         else
-        {
             StopThrusting();
-        }
     }
 
     private void StartThrusting()
     {
         rb.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
-        if (!audioSource.isPlaying)
-        {
-            audioSource.PlayOneShot(mainEngineSFX);
-        }
-        if (!mainEngineParticles.isPlaying)
-        {
-            mainEngineParticles.Play();
-        }
+        if (!audioSource.isPlaying) audioSource.PlayOneShot(mainEngineSFX);
+        if (!mainEngineParticles.isPlaying) mainEngineParticles.Play();
     }
 
     private void StopThrusting()
@@ -64,22 +66,21 @@ public class Movement : MonoBehaviour
         mainEngineParticles.Stop();
     }
 
-    private void ProcessRotation()
-    {
-        float rotationInput = rotation.ReadValue<float>();
-        if(rotationInput < 0)
-        {
-            RotateRight();
-        }
-        else if(rotationInput > 0)
-        {
-            RotateLeft();
-        }
-        else
-        {
-            StopRotating();
-        }
-    }
+private void ProcessRotation()
+{
+    float value = 0f;
+
+    // Now pressing A will rotate right, D will rotate left
+    if (Keyboard.current.aKey.isPressed) value = -1f; // right
+    if (Keyboard.current.dKey.isPressed) value = 1f;  // left
+
+    if (value < 0)
+        RotateRight();
+    else if (value > 0)
+        RotateLeft();
+    else
+        StopRotating();
+}
 
     private void RotateRight()
     {

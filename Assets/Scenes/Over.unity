@@ -3093,6 +3093,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2123609288621912401, guid: 8c6cfca3bf4e5c74cbb0faa9e19e9063, type: 3}
+      propertyPath: thrustStrength
+      value: 4000
+      objectReference: {fileID: 0}
     - target: {fileID: 2606088774129850770, guid: 8c6cfca3bf4e5c74cbb0faa9e19e9063, type: 3}
       propertyPath: m_Name
       value: Player Rocket
@@ -3307,9 +3311,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 44.973
       objectReference: {fileID: 0}
+    - target: {fileID: 5643008969349350051, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5643008969349350051, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5643008969349350051, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5643008969349350051, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5643008969349350051, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
+      propertyPath: m_UseColorTemperature
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6498842965923778463, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
       propertyPath: m_Name
       value: Directional Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718281715617405802, guid: 0abbefc841604cf4b847a252a412a674, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

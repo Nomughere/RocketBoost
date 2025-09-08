@@ -2,30 +2,39 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
-{   
+{
+    [Header("Thrust Settings")]
     [SerializeField] float thrustStrength = 100f;
     [SerializeField] float rotationStrength = 100f;
+    [SerializeField] float boostMultiplier = 2f;          // Speed multiplier when boosting
+    [SerializeField] float boostFuelMultiplier = 3f;      // Fuel drain multiplier when boosting
+
+    [Header("Effects")]
     [SerializeField] AudioClip mainEngineSFX;
     [SerializeField] ParticleSystem mainEngineParticles;
     [SerializeField] ParticleSystem rightThrustParticles;
     [SerializeField] ParticleSystem leftThrustParticles;
+
+    [Header("References")]
+    [SerializeField] FuelSystem fuelSystem;
 
     Rigidbody rb;
     AudioSource audioSource;
 
     InputAction thrust;
     InputAction rotation;
+    InputAction boost;
 
-private void Awake()
-{
-    // SPACE = forward thrust
-    thrust = new InputAction(binding: "<Keyboard>/space");
+    private void Awake()
+    {
+        thrust = new InputAction(binding: "<Keyboard>/space");
 
-    // A = rotate right, D = rotate left (as you asked before)
-    rotation = new InputAction(type: InputActionType.Value);
-    rotation.AddBinding("<Keyboard>/a"); // rotate right
-    rotation.AddBinding("<Keyboard>/d"); // rotate left
-}
+        rotation = new InputAction(type: InputActionType.Value);
+        rotation.AddBinding("<Keyboard>/a");
+        rotation.AddBinding("<Keyboard>/d");
+
+        boost = new InputAction(binding: "<Keyboard>/leftShift");
+    }
 
     private void Start()
     {
@@ -37,6 +46,7 @@ private void Awake()
     {
         thrust.Enable();
         rotation.Enable();
+        boost.Enable();
     }
 
     private void FixedUpdate()
@@ -47,6 +57,12 @@ private void Awake()
 
     private void ProcessThrust()
     {
+        if (fuelSystem != null && !fuelSystem.CanUseSpace)
+        {
+            StopThrusting();
+            return;
+        }
+
         if (thrust.IsPressed())
             StartThrusting();
         else
@@ -55,7 +71,14 @@ private void Awake()
 
     private void StartThrusting()
     {
-        rb.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
+        bool isBoosting = boost.IsPressed();
+        float currentThrust = thrustStrength * (isBoosting ? boostMultiplier : 1f);
+
+        rb.AddRelativeForce(Vector3.up * currentThrust * Time.fixedDeltaTime);
+
+        if (fuelSystem != null)
+            fuelSystem.ConsumeFuel(isBoosting ? boostFuelMultiplier : 1f);
+
         if (!audioSource.isPlaying) audioSource.PlayOneShot(mainEngineSFX);
         if (!mainEngineParticles.isPlaying) mainEngineParticles.Play();
     }
@@ -66,21 +89,20 @@ private void Awake()
         mainEngineParticles.Stop();
     }
 
-private void ProcessRotation()
-{
-    float value = 0f;
+    private void ProcessRotation()
+    {
+        float value = 0f;
 
-    // Now pressing A will rotate right, D will rotate left
-    if (Keyboard.current.aKey.isPressed) value = -1f; // right
-    if (Keyboard.current.dKey.isPressed) value = 1f;  // left
+        if (Keyboard.current.aKey.isPressed) value = -1f;
+        if (Keyboard.current.dKey.isPressed) value = 1f;
 
-    if (value < 0)
-        RotateRight();
-    else if (value > 0)
-        RotateLeft();
-    else
-        StopRotating();
-}
+        if (value < 0)
+            RotateRight();
+        else if (value > 0)
+            RotateLeft();
+        else
+            StopRotating();
+    }
 
     private void RotateRight()
     {

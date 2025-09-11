@@ -504,9 +504,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4700314883192024154, guid: dcdb50e8bf063574aa23b927510cb754, type: 3}
+      propertyPath: maxFuel
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4700314883192024154, guid: dcdb50e8bf063574aa23b927510cb754, type: 3}
       propertyPath: fuelText
       value: 
       objectReference: {fileID: 1584186988}
+    - target: {fileID: 4700314883192024154, guid: dcdb50e8bf063574aa23b927510cb754, type: 3}
+      propertyPath: currentFuel
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4807390660448749746, guid: dcdb50e8bf063574aa23b927510cb754, type: 3}
       propertyPath: m_LocalPosition.x
       value: 431.70035
@@ -5230,6 +5238,10 @@ PrefabInstance:
       propertyPath: fuelSystem
       value: 
       objectReference: {fileID: 1982556468}
+    - target: {fileID: 2123609288621912401, guid: 8c6cfca3bf4e5c74cbb0faa9e19e9063, type: 3}
+      propertyPath: thrustStrength
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 2606088774129850770, guid: 8c6cfca3bf4e5c74cbb0faa9e19e9063, type: 3}
       propertyPath: m_Name
       value: Player Rocket

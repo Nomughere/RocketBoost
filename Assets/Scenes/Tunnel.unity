@@ -6522,6 +6522,10 @@ PrefabInstance:
       propertyPath: fuelSystem
       value: 
       objectReference: {fileID: 845366557}
+    - target: {fileID: 2123609288621912401, guid: 8c6cfca3bf4e5c74cbb0faa9e19e9063, type: 3}
+      propertyPath: thrustStrength
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 2606088774129850770, guid: 8c6cfca3bf4e5c74cbb0faa9e19e9063, type: 3}
       propertyPath: m_Name
       value: Player Rocket
